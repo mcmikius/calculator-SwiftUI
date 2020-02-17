@@ -8,8 +8,71 @@
 
 import SwiftUI
 
+enum CalculatorButton: String {
+    case zero, one, two, three, four, five, six, seven, eight, nine, dot
+    case equals, plus, minus, multiply, divide
+    case ac, plusMinus, percent
+    
+    var title: String {
+        switch self {
+        case .zero:
+            return "0"
+        case .one:
+            return "1"
+        case .two:
+            return "2"
+        case .three:
+            return "3"
+        case .four:
+            return "4"
+        case .five:
+            return "5"
+        case .six:
+            return "6"
+        case .seven:
+            return "7"
+        case .eight:
+            return "8"
+        case .nine:
+            return "9"
+        case .dot:
+            return "."
+        case .equals:
+            return "="
+        case .minus:
+            return "-"
+        case .plusMinus:
+            return "+/-"
+        case .divide:
+            return "/"
+        case .multiply:
+            return "X"
+        case .percent:
+            return "%"
+        case .plus:
+            return "+"
+        case .ac:
+            return "AC"
+        }
+    }
+    
+    var backgroundColor: Color {
+        switch self {
+        case .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .dot:
+            return Color(.darkGray)
+        case .ac, .plusMinus, .percent:
+            return Color(.lightGray)
+        default:
+            return .orange
+        }
+    }
+    
+}
+
 struct ContentView: View {
-    let buttons = [["AC", "+/-", "%", "/"], ["7", "8", "9", "X"], ["4", "5", "6", "-"], ["1", "2", "3", "+"], ["0", ".", ".", "="]]
+    
+    let buttons: [[CalculatorButton]] = [[.ac, .plusMinus, .percent, .divide], [.seven, .eight, .nine, .multiply], [.four, .five, .six, .minus], [.one, .two, .three, .plus], [.zero, .dot, .equals]]
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.black.edgesIgnoringSafeArea(.all)
@@ -24,17 +87,27 @@ struct ContentView: View {
                 ForEach(buttons, id:\.self) { row in
                     HStack(spacing: 12) {
                         ForEach(row, id: \.self) { button in
-                            Text(button).font(.system(size: 32)).frame(width: self.buttonWidth(), height: self.buttonWidth()).foregroundColor(.white).background(Color.yellow).cornerRadius(self.buttonWidth())
+                            Button(action: {
+                                
+                            }) {
+                                Text(button.title).font(.system(size: 32)).frame(width: self.buttonWidth(button: button), height: (UIScreen.main.bounds.width - 5 * 12) / 4).foregroundColor(.white).background(button.backgroundColor).cornerRadius(self.buttonWidth(button: button))
+                            }
                         }
-                    }
+                    }.padding(.bottom, 12)
                 }
             }.padding(.bottom)
         }
     }
     
-    func buttonWidth() -> CGFloat {
-        return (UIScreen.main.bounds.width - 5 * 12) / 4
+    func buttonWidth(button: CalculatorButton) -> CGFloat {
+        if button == .zero {
+            return (UIScreen.main.bounds.width - 5 * 12) / 4 * 2.1
+        } else {
+            return (UIScreen.main.bounds.width - 5 * 12) / 4
+        }
+        
     }
+    
 }
 
 
